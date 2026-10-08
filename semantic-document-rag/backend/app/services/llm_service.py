@@ -46,10 +46,11 @@ class LLMService:
         response = client.chat.completions.create(
             model=self.model,
             temperature=0.1,
-            max_tokens=800,
+            max_tokens=2000,  # reasoning models (e.g. gpt-oss) also spend tokens on thinking
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": user_prompt},
             ],
         )
-        return (response.choices[0].message.content or "").strip()
+        text = (response.choices[0].message.content or "").strip()
+        return text or "The model returned an empty answer. Please try again."
