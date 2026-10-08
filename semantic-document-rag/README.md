@@ -115,16 +115,3 @@ If you change `NEXT_PUBLIC_API_URL` later, redeploy the frontend (it is baked in
   Render persistent disk (paid) mounted at `DATA_DIR`, or move to pgvector / Qdrant.
 - The index is shared by all visitors. Put a spending limit on your LLM key before sharing the link publicly.
 
-## Alternative: one Vercel project with two services
-
-`vercel.json` (repo root) deploys `backend` (FastAPI) and `frontend` (Next.js) as services of a single
-Vercel project on one domain. `/api/*` is routed to the backend, everything else to the frontend, so the
-browser calls the API on the same origin (no `NEXT_PUBLIC_API_URL`, no CORS). No bindings are needed because
-the services never call each other server-side. Test locally with `vercel dev`.
-
-**Serverless limits that affect this app** (the Render setup above does not have them):
-- Function request bodies are limited to ~4.5 MB, so larger PDFs are rejected by the platform.
-- Only `/tmp` is writable and it is per-instance and ephemeral: the FAISS index and uploaded documents are not
-  shared between invocations, so an upload can be invisible to the next request.
-- The embedding model is downloaded again on cold starts; the Python bundle must fit Vercel's size limit.
-Use this layout for a demo only if you move storage to an external service (Postgres + pgvector, Qdrant, ...).
