@@ -1,4 +1,4 @@
-# DocuMind — Semantic Document Search & RAG Assistant
+# DocuMind - Semantic Document Search & RAG Assistant
 
 AI-powered document search and question answering using Retrieval-Augmented Generation.
 Upload PDFs, ask questions, get answers with **document + page citations**.
